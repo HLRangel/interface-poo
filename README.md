@@ -37,6 +37,6 @@ Com o ambiente virtual ativo, execute o comando:
 
 `python main.py`
 
-# Uso demLLMs
+# Uso de LLMs
 
 - ChatGPT (GPT-5.5-Instant): *Troubleshooting* da sintáxe PlantUML (PlantText), que foi a ferramenta de renderização utilizada para criação do diagrama vinculado ao projeto.
