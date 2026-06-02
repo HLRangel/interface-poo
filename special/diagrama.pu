@@ -1,0 +1,28 @@
+@startuml
+title Jogo de Tabuleiro
+
+[*] --> TelaInicial
+
+state TelaInicial {
+}
+
+state TelaConfiguracao {
+}
+
+state TelaTabuleiro {
+}
+
+state TelaResultado {
+}
+
+TelaInicial --> TelaConfiguracao : Novo Jogo
+TelaConfiguracao --> TelaInicial : Voltar
+TelaConfiguracao --> TelaTabuleiro : Iniciar Partida
+
+TelaTabuleiro --> TelaResultado : Partida Encerrada
+TelaTabuleiro --> TelaConfiguracao : Alterar Configurações
+
+TelaResultado --> TelaInicial : Menu Principal
+TelaResultado --> TelaTabuleiro : Jogar Novamente
+
+@enduml
