@@ -25,7 +25,7 @@ Se necessário, crie um ambiente virtual:
 
 Ative o ambiente virtual:
 
-`./poo_env/bin/activate`
+`source ./poo_env/bin/activate`
 
 Depois, instale os pré-requisitos:
 
