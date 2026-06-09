@@ -40,6 +40,7 @@ class BoardGameApp(MDApp):
 
         # Gerenciador de telas configurado com o fluxo completo do PlantUML
         sm = ScreenManager()
+        
         sm.add_widget(TelaInicial(name='tela_inicial'))
         sm.add_widget(TelaConfiguracao(name='tela_configuracao', controller=self.controller))
         sm.add_widget(TelaTabuleiro(name='tela_tabuleiro', controller=self.controller))

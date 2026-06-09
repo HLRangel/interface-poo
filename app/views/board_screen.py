@@ -6,7 +6,9 @@ from kivymd.uix.boxlayout import MDBoxLayout
 class TelaTabuleiro(Screen):
     def __init__(self, controller, **kwargs):
         super().__init__(**kwargs)
-        self.controller = controller  # Guarda o controller recebido do main.py
+
+        # Guarda o controller recebido do main.py
+        self.controller = controller
         
         layout = MDBoxLayout(orientation='vertical', padding=20, spacing=20)
         layout.add_widget(MDLabel(text="Tela do Tabuleiro (3x)\nEm construção", halign="center", font_style="H4"))
