@@ -1,0 +1,97 @@
+ScreenManager:
+    id: sm
+
+    MDScreen:
+        name: "home"
+
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'assets/images/background.png'
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+
+            MDRaisedButton:
+                style: "elevated"
+                icon: "plus"
+                text: "Jogar"
+
+                on_release: sm.current = "config"
+
+    MDScreen:
+        name: "config"
+        
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'assets/images/background.png'
+
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+
+            MDBoxLayout:
+                id: box
+
+                adaptive_size: True
+                spacing: "12dp"
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDCard:
+                    padding: "4dp"
+                    size_hint: None, None
+                    size: "240dp", "100dp"
+
+                    style: "elevated"
+
+                    #TROCAR
+                    on_release: sm.current = "game"
+
+                    MDRelativeLayout:
+
+                        MDIconButton:
+                            icon: "dots-vertical"
+                            pos_hint: {"top": 1, "right": 1}
+
+                        MDLabel:
+                            text: "Jogador vs. Robô"
+                            adaptive_size: True
+                            color: "black"
+                            pos: "12dp", "12dp"
+                            bold: True
+
+                MDCard:
+                    padding: "4dp"
+                    size_hint: None, None
+                    size: "240dp", "100dp"
+
+                    style: "elevated"
+
+                    #TROCAR
+                    on_release: sm.current = "game"
+
+                    MDRelativeLayout:
+
+                        MDIconButton:
+                            icon: "dots-vertical"
+                            pos_hint: {"top": 1, "right": 1}
+
+                        MDLabel:
+                            text: "Robô vs Robô"
+                            adaptive_size: True
+                            color: "black"
+                            pos: "12dp", "12dp"
+                            bold: True
+
+    MDScreen:
+        name: "game"
+        
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'assets/images/background.png'
