@@ -93,8 +93,8 @@ class GameRect(Widget):
             local = self.to_local(*touch.pos)
             print(f"clicked at window={touch.pos}, local={local}")
 
-            self._draw_state()
             self._click_change_state(touch.pos)
+            self._draw_state()
 
             return True
 
