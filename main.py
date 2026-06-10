@@ -6,48 +6,81 @@ from kivymd.uix.screen import MDScreen
 from kivy.properties import ColorProperty
 
 class GameRect(Widget):
-    color = ColorProperty((1, 0, 0, 1))
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         with self.canvas:
-            self.color_instruction = Color(*self.color)
-            self.rect = Rectangle(pos=self.pos, size=self.size)
+            self.rect = Rectangle(
+                source='assets/images/neutral.png',
+                pos=self.pos,
+                size=self.size
+            )
 
         self.bind(pos=self._update_rect, size=self._update_rect)
-        self.bind(color=self._update_color)
+
+        self.visualstate = [
+            "-", "-", "-",
+            "-", "-", "-",
+            "-", "-", "-"
+        ]
+
+        self.positions = []
 
     def _update_rect(self, *args):
         self.rect.pos = self.pos
         self.rect.size = self.size
 
-    def _update_color(self, *args):
-        self.color_instruction.rgba = self.color
+    def _draw_state(self):
+        self.canvas.after.clear()
+        self.positions = []
 
-    def _draw_symbol(self, clickpos, symbolkind):
-        symbol_size = (20, 20)
+        symbol_size = (80, 80)
+        cols = 3
+        rows = 3
+        gap = 60
 
-        symbol_pos = (
-            clickpos[0] - symbol_size[0] / 2,
-            clickpos[1] - symbol_size[1] / 2
-        )
+        grid_w = cols * symbol_size[0] + (cols - 1) * gap
+        grid_h = rows * symbol_size[1] + (rows - 1) * gap
 
-        with self.canvas:
-            Color(0, 0, 1, 1)
-            Rectangle(pos=symbol_pos, size=symbol_size)
+        start_x = self.x + (self.width  - grid_w) / 2
+        start_y = self.y + (self.height - grid_h) / 2
+
+        for i, state in enumerate(self.visualstate):
+            col = i % cols
+            row = i // cols
+
+            state_pos_x = start_x + col * (symbol_size[0] + gap)
+            state_pos_y = start_y + row * (symbol_size[1] + gap)
+
+            with self.canvas.after:
+                Color(1, 1, 1, 1)
+
+                Rectangle(
+                    source='assets/images/neutral.png',
+                    pos=(state_pos_x, state_pos_y),
+                    size=symbol_size
+                )
+
+            self.positions.append((state_pos_x, state_pos_y))
+
+    def _click_change_state(self, pos):
+        symbol_size = (80, 80)
+        for position in self.positions:
+            if (position[0] <= pos[0] <= position[0] + symbol_size[0] and
+                position[1] <= pos[1] <= position[1] + symbol_size[1]):
+                print("hit!")
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             local = self.to_local(*touch.pos)
             print(f"clicked at window={touch.pos}, local={local}")
 
-            self._draw_symbol(touch.pos, "X")
+            self._draw_state()
+            self._click_change_state(touch.pos)
 
             return True
-        
-        return super().on_touch_down(touch)
 
+        return super().on_touch_down(touch)
 
 class GameScreen(MDScreen):
     def on_kv_post(self, base_widget):
