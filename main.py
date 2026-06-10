@@ -19,8 +19,8 @@ class GameRect(Widget):
         self.bind(pos=self._update_rect, size=self._update_rect)
 
         self.visualstate = [
-            "-", "-", "-",
-            "-", "-", "-",
+            "-", "x", "-",
+            "-", "o", "-",
             "-", "-", "-"
         ]
 
@@ -45,18 +45,23 @@ class GameRect(Widget):
         start_x = self.x + (self.width  - grid_w) / 2
         start_y = self.y + (self.height - grid_h) / 2
 
+        state_images = {
+            "-": "assets/images/neutral.png",
+            "x": "assets/images/x.png",
+            "o": "assets/images/o.png",
+        }
+
         for i, state in enumerate(self.visualstate):
             col = i % cols
             row = i // cols
 
             state_pos_x = start_x + col * (symbol_size[0] + gap)
-            state_pos_y = start_y + row * (symbol_size[1] + gap)
+            state_pos_y = start_y + (rows - 1 - row) * (symbol_size[1] + gap)
 
             with self.canvas.after:
                 Color(1, 1, 1, 1)
-
                 Rectangle(
-                    source='assets/images/neutral.png',
+                    source=state_images[state],
                     pos=(state_pos_x, state_pos_y),
                     size=symbol_size
                 )
@@ -65,10 +70,14 @@ class GameRect(Widget):
 
     def _click_change_state(self, pos):
         symbol_size = (80, 80)
+        posn = 1
+
         for position in self.positions:
             if (position[0] <= pos[0] <= position[0] + symbol_size[0] and
                 position[1] <= pos[1] <= position[1] + symbol_size[1]):
-                print("hit!")
+                print(f"hit on position {posn}")
+            
+            posn += 1
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
