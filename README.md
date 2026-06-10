@@ -39,4 +39,8 @@ Com o ambiente virtual ativo, execute o comando:
 
 # Uso de LLMs
 
-- ChatGPT (GPT-5.5-Instant): *Troubleshooting* da sintáxe PlantUML (PlantText), que foi a ferramenta de renderização utilizada para criação do diagrama vinculado ao projeto.
+**Obs:** Este projeto faz uso de um arquivo `AGENTS.md` para forçar que a geração de código e documentação por modelos de linguagem se dê de uma forma minimamente concisa.
+
+- ChatGPT (GPT-5.5-Instant): *Troubleshooting* da sintáxe PlantUML (PlantText), que foi a ferramenta de renderização utilizada para criação do diagrama vinculado ao projeto. Implementação inicial de `app/controllers/game_controller.py`.
+
+- Claude (Claude Sonnet 4.6): *Troubleshooting* de problemas de renderização e sintaxe KV, auxilio na estruturação de classes.
