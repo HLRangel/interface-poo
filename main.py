@@ -5,6 +5,8 @@ from kivy.graphics import Color, Rectangle
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ColorProperty
 
+from app.controllers.game_controller import GameController
+
 class GameRect(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -19,10 +21,13 @@ class GameRect(Widget):
         self.bind(pos=self._update_rect, size=self._update_rect)
 
         self.visualstate = [
-            "-", "x", "-",
-            "-", "o", "-",
+            "-", "-", "-",
+            "-", "-", "-",
             "-", "-", "-"
         ]
+
+        self.gamecontroller = GameController()
+        self.gamecontroller.start_game(True)
 
         self.positions = []
 
@@ -75,8 +80,12 @@ class GameRect(Widget):
         for position in self.positions:
             if (position[0] <= pos[0] <= position[0] + symbol_size[0] and
                 position[1] <= pos[1] <= position[1] + symbol_size[1]):
-                print(f"hit on position {posn}")
+                
+                if self.visualstate[posn - 1] == "-":
+                    self.visualstate[posn - 1] = "x"
+                    self.gamecontroller.make_move((posn - 1) % 3, (posn - 1) // 3)
             
+                    self.gamecontroller.get_board_state().display()
             posn += 1
 
     def on_touch_down(self, touch):

@@ -110,8 +110,8 @@ class TTTPiece(Piece):
 class TTTBoard(Board):
     def __init__(self):
         super().__init__(3, 3)
-        self.states.append(TTTPiece("X"))   # states[1]
-        self.states.append(TTTPiece("O"))   # states[2]
+        self.states.append(TTTPiece("x"))   # states[1]
+        self.states.append(TTTPiece("o"))   # states[2]
         self.resetBoard()
 
     def place_piece(self, x, y, piece_idx):
@@ -232,9 +232,3 @@ class TicTacToe(Game):
                 return False
 
         return True
-
-    def run(self):
-        print("=== Jogo da Velha ===\n")
-        self.board.display()
-        while self.update():
-            pass
