@@ -4,8 +4,12 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Color, Rectangle
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ColorProperty
+from kivymd.uix.label import MDLabel
+from kivy.uix.anchorlayout import AnchorLayout
 
 from app.controllers.game_controller import GameController
+
+_gameState = 0
 
 class GameRect(Widget):
     def __init__(self, **kwargs):
@@ -96,10 +100,24 @@ class GameRect(Widget):
                         
                         pidx += 1
 
+                    global _gameState
+                    
                     if self.gamecontroller.winner():
                         print(f"Game won by {self.gamecontroller.winner()}")
+
+                        if self.gamecontroller.winner() == "x":
+                            _gameState = 0
+                        else:
+                            _gameState = 1
+
+                        MDApp.get_running_app().root.current = "gameend"
+                    
                     elif self.gamecontroller.is_drawn() :
+                        _gameState = 2
+
                         print("Drawn!")
+                        print(f"Game won by {self.gamecontroller.winner()}")
+
             posn += 1
 
     def on_touch_down(self, touch):
@@ -137,6 +155,27 @@ class GameScreen(MDScreen):
     def _update_bg(self, *args):
         self.bg.pos = self.pos
         self.bg.size = self.size
+    
+class GameEndScreen(MDScreen):
+    def on_kv_post(self, base_widget):
+        global _gameState
+
+        if _gameState == 0:
+            gtext = "Você ganhou!"
+        elif _gameState == 1:
+            gtext = "Você perdeu!"
+        else:
+            gtext = "Empate!"
+
+        anchor = AnchorLayout(anchor_x="center", anchor_y="center")
+        label = MDLabel(
+            text=gtext,
+            halign="center",
+            adaptive_size=True,
+        )
+
+        anchor.add_widget(label)
+        self.add_widget(anchor)
 
 class BoardGameApp(MDApp):
     def build(self):
