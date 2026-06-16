@@ -179,13 +179,36 @@ class TTTPlayer(Player):
                     print("Movimento inválido, forma correta: <x> <y>")
         return super().turn_update(states)
 
+class TTTHeadlessPlayer(Player):
+    def __init__(self, name="Player"):
+        super().__init__(name)
+        self.board_ref = None
+        self.piece_idx = None
+
+    def turn_update(self, states, movex, movey):
+        if states[0][0] == "MOVE":
+            while True:
+                try:
+                    if (movex, movey) in self.board_ref.empty_cells():
+                        return ["MOVE", movex, movey]
+                    print("Ocupada! Tente de novo.")
+                except (ValueError, IndexError):
+                    print("Movimento inválido, forma correta: <x> <y>")
+        return super().turn_update(states)
 
 class TicTacToe(Game):
     def create_board(self):
         self.board = TTTBoard()
 
-    def __init__(self, interactive):
-        if interactive:
+    def __init__(self, interactive, headless):
+        self.winner_name = "none"
+        self.drawn = False
+        
+        self.headless = headless
+
+        if headless:
+            super().__init__([TTTHeadlessPlayer("HeadlessPlayer"), TTTBot("Bot")])
+        elif interactive:
             super().__init__([TTTPlayer("Player"), TTTBot("Bot")])
         else:
             super().__init__([TTTBot("Bot 1"), TTTBot("Bot 2")])
@@ -214,21 +237,36 @@ class TicTacToe(Game):
     def is_draw(self):
         return len(self.board.empty_cells()) == 0
 
+    def headless_player_handler(self):
+        pass
+
     def update(self):
         for player in self.players:
-            result = player.turn_update([["MOVE", 2]])
+            if self.headless and player.name == "HeadlessPlayer":
+                result = self.headless_player_handler()
+            else:
+                result = player.turn_update([["MOVE", 2]])
 
             if result[0] == "MOVE":
                 self.board.place_piece(result[1], result[2], player.piece_idx)
 
-            self.board.display()
+            if not self.headless:
+                self.board.display()
 
             winner = self.check_winner()
             if winner:
-                print(f"{winner.name} ganhou!")
+                self.winner_name = winner.name
+
+                if not self.headless:
+                    print(f"{winner.name} ganhou!")
+
                 return False
             if self.is_draw():
-                print("Empate!")
+                self.drawn = True
+
+                if not headless:
+                    print("Empate!")
+
                 return False
 
         return True

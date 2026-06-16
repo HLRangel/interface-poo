@@ -84,8 +84,18 @@ class GameRect(Widget):
                 if self.visualstate[posn - 1] == "-":
                     self.visualstate[posn - 1] = "x"
                     self.gamecontroller.make_move((posn - 1) % 3, (posn - 1) // 3)
-            
-                    self.gamecontroller.get_board_state().display()
+
+                    self.gamecontroller.next()
+                    
+                    pidx = 0
+                    for piece in self.gamecontroller.get_board_state().board:
+                        if piece.symbol == "x" or piece.symbol == "o":
+                            self.visualstate[pidx] = piece.symbol
+                        else:
+                            self.visualstate[pidx] = "-"
+                        
+                        pidx += 1
+                    
             posn += 1
 
     def on_touch_down(self, touch):
