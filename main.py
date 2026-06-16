@@ -95,7 +95,11 @@ class GameRect(Widget):
                             self.visualstate[pidx] = "-"
                         
                         pidx += 1
-                    
+
+                    if self.gamecontroller.winner():
+                        print(f"Game won by {self.gamecontroller.winner()}")
+                    elif self.gamecontroller.is_drawn() :
+                        print("Drawn!")
             posn += 1
 
     def on_touch_down(self, touch):

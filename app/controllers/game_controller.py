@@ -34,6 +34,17 @@ class GameController:
         if self.game:
             self.game.update()
 
+    def is_drawn(self):
+        if self.game:
+            return self.game.is_draw()
+    
+    def winner(self):
+        if self.game:
+            if self.game.winner_name == "none":
+                return False
+            else:
+                return self.game.winner_name
+                
     def get_board_state(self):
         if self.game:
             return self.game.board
